@@ -1,17 +1,38 @@
+## JHU Data Science Course - Exploratory Data Analysis
+## Course Project No.1
+## Electric Power Consumption (epc_)
+## Plot 1
+
 library(dplyr)
 
-# File pats and file-name for data. Replace with your paths.
-elpowercons_file_path_output <- "//mnt/eric/Principal/Git/exploringdata_plottingassignment1"
-elpowercons_file_path_input <- "//mnt/Principal/NextCloud/Workspace/R Projects/exploringdata/plotting_assignment1"
-elpowercons_data_filename <- paste0(elpowercons_file_path_input,"/", "household_power_consumption.txt", collapse = "")
+# File pats and file-name for data. OBS: Replace with your paths.
+epc_file_path_output <- "//mnt/Principal/Git/exploringdata_plottingassignment1/"
+epc_file_path_input <- 
+  "//mnt/Principal/NextCloud/Workspace/R Projects/exploringdata/plotting_assignment1/"
+epc_data_filename <- paste0(epc_file_path_input, 
+                            "household_power_consumption.txt", collapse = "")
 
-# Readthe text-file (a CSV)
-elpowercons_data <- read.csv(elpowercons_data_filename, header = TRUE, sep = ";", dec = ".", na.strings = "?")
+# Read the text-file (a CSV)
+epc_data <- read.csv(epc_data_filename, header = TRUE, sep = ";", 
+                     dec = ".", na.strings = "?")
 
 # Convert the Date-column from strings to dates
-elpowercons_dates <- as.Date(paste(elpowercons_data$Date,elpowercons_data$Time), "%d/%m/%Y")
-elpowercons_data$Date <- elpowercons_dates
+epc_dates <- as.Date(paste(epc_data$Date,epc_data$Time), "%d/%m/%Y")
+epc_data$Date <- epc_dates
 
 # Subset to the dates 2007-02-01 and 2007-02-01
-elpowercons_data_subset <- subset(elpowercons_data, as.Date(Date) >= "2007-02-01" & as.Date(Date) <= "2007-02-02")
+epc_data_subset <- subset(epc_data, as.Date(Date) >= "2007-02-01" 
+                          & as.Date(Date) <= "2007-02-02")
 
+# Set window to 1 tile and plot to screen
+par(mfcol = c(1,1))
+hist(epc_data_subset$Global_active_power, col = "red", main = "Global Active Power", 
+     xlab = "Global Active Power (kilowatts)", ylab = "Frequency")
+
+# Set device to png and plot to file
+png(filename = paste0(epc_file_path_output, "plot1.png"), width = 480, 
+    height = 480, units = "px")
+hist(epc_data_subset$Global_active_power, col = "red", 
+     main = "Global Active Power", xlab = "Global Active Power (kilowatts)", 
+     ylab = "Frequency")
+dev.off()
